@@ -30,9 +30,10 @@ export default defineConfig({
     }
   },
   server: {
-    host: '0.0.0.0',
+    // https: true,
+    host: 'localhost',
     hmr: {
-      port: 443,
+      port: 3000,
     }
   }
 })

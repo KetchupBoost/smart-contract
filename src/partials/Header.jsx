@@ -6,6 +6,8 @@ import { ethers } from "ethers";
 function Header() {
 
   const [top, setTop] = useState(true);
+  
+  
   const [currentAccount, setCurrentAccount] = useState("");
 
   // State Variable to store our user's public wallet.
@@ -36,8 +38,24 @@ function Header() {
     }
   }
 
-  
-  
+  const wave = async () => {
+    try {
+      const { ethereum } = window;
+
+      if(ethereum) {
+        const provider = new ethers.providers.Web3Provider(ethereum);
+        const signer = new provider.getSigner();
+        const wavePortalContract = new ethers.Contract(contractAddress, contractABI, signer);
+
+        let count = await wavePortalContract.getTotalWaves();
+        
+        console.log("Retrieved total wave count... ", count.toNumber());
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   useEffect(() => {
     checkIfWalletIsConnected();
   }, []);
@@ -60,17 +78,7 @@ function Header() {
     }
   }
 
-  const wave = async () = {
-    try {
-      const { ethereum } = window;
-
-      if(ethereum) {
-        const provider = new ethers.providers.Web3Provider(ethereum);
-        const signer = new provider.getSigner();
-        const wavePortalContract = new ethers.Contract(contractAddress, contractABI, signer);
-      }
-    }
-  }
+  
   
   // detect whether user has scrolled the page down by 10px 
   useEffect(() => {
@@ -116,7 +124,7 @@ function Header() {
                   </button>
                 </li>
                 :<li>
-                  <button className="btn-sm text-blue-100 text-transparent bg-gradient-to-r from-blue-500 to-teal-400 ml-3" onClick={connectWallet}>
+                  <button className="btn-sm text-blue-100 bg-gradient-to-r from-blue-500 to-teal-400 ml-3" onClick={connectWallet}>
                     Connect Wallet
                   </button>
                 </li>
