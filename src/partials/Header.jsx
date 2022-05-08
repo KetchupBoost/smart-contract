@@ -2,13 +2,17 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ethers } from "ethers";
 
+// Redux ToolKit
+import { useSelector, useDispatch } from 'react-redux';
+import { setAccount } from '../store/slices/walletSlice';
 
 function Header() {
 
   const [top, setTop] = useState(true);
-  
-  
-  const [currentAccount, setCurrentAccount] = useState("");
+  const dispatch = useDispatch();  
+  // Redux Variables
+  const currentAccount = useSelector((state) => state.wallet.account);
+  const setCurrentAccount = (account) => dispatch(setAccount(account));
 
   // State Variable to store our user's public wallet.
   const checkIfWalletIsConnected = async () => {
@@ -28,8 +32,8 @@ function Header() {
       if (accounts.length !== 0) {
         const account = accounts[0];
 
-        console.log("Found an authorized account: ", account);
         setCurrentAccount(account);
+        console.log("Found an authorized account: ", currentAccount);
       } else {
         console.log("No authorized account found.");
       }
